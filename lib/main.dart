@@ -50,8 +50,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   void _onSignInClicked() {
-
+    if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
+
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  static const snackBar = SnackBar(
+    content: Text("Please enter your username and password")
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -87,16 +96,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const TextField(keyboardType: TextInputType.text,
-            decoration: InputDecoration(
+            TextField(
+                controller: usernameController,
+                keyboardType: TextInputType.text,
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.all(10.0),
               icon: Icon(Icons.person),
               labelText: 'User Name',
               helperText: 'Input your user name here'
             ),
             autofocus: false),
-            const TextField(keyboardType: TextInputType.text,
-                decoration: InputDecoration(
+            TextField(
+                controller: passwordController,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
                     contentPadding: EdgeInsets.all(10.0),
                     icon: Icon(Icons.lock),
                     labelText: 'Password',
@@ -104,9 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 autofocus: false),
             Padding(padding: const EdgeInsets.only(top: 20.0),
-                child: ElevatedButton(child: const Text("Sign in"), onPressed: (){
-
-            },))
+                child: ElevatedButton(onPressed: _onSignInClicked, child: const Text("Sign in")))
           ],
         ),
       ),
