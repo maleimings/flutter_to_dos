@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_to_dos/dashboard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,6 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onSignInClicked() {
     if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(name: usernameController.value.text)));
     }
   }
 
