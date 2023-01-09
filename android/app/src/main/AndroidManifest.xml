@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.todos.flutter_to_dos">
+
+    <uses-permission android:name="android.permissions.INTERNET" />
    <application
         android:label="flutter_to_dos"
         android:name="${applicationName}"
