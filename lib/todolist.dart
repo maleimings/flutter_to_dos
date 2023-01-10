@@ -14,11 +14,17 @@ class ToDoList extends StatelessWidget {
       ),
       body: Center(
         child: ListView.separated(
+          shrinkWrap: true,
             padding: const EdgeInsets.all(20.0),
             itemCount: todolist.length,
             itemBuilder: (BuildContext context, int index) {
               var item = todolist[index];
-              return ListTile(title: Text("${item.title} ${item.completed}"));
+              return SizedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [Icon(item.completed ? Icons.check : Icons.clear), Flexible(child: Text("${item.title} ${item.completed}"))],
+                ),
+              );
             },
             separatorBuilder: (BuildContext context, int index) {
               return const Divider(color: Colors.grey);
