@@ -22,7 +22,8 @@ class ToDoList extends StatelessWidget {
               return SizedBox(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [Icon(item.completed ? Icons.check : Icons.clear), Flexible(child: Text("${item.title} ${item.completed}"))],
+                  children: [Icon(item.completed ? Icons.check_circle_outline : Icons.radio_button_off),
+                   Padding(padding: const EdgeInsets.only(left: 20.0), child: Flexible(child: Text("${item.title} ${item.completed}")))],
                 ),
               );
             },
