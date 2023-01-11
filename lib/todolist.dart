@@ -19,11 +19,12 @@ class ToDoList extends StatelessWidget {
             itemCount: todolist.length,
             itemBuilder: (BuildContext context, int index) {
               var item = todolist[index];
-              return SizedBox(
+              return Expanded(
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [Icon(item.completed ? Icons.check_circle_outline : Icons.radio_button_off),
-                   Padding(padding: const EdgeInsets.only(left: 20.0), child: Flexible(child: Text("${item.title} ${item.completed}")))],
+                   Flexible(child: Container(padding: const EdgeInsets.only(left: 20.0), child: Text(item.title)))],
                 ),
               );
             },
