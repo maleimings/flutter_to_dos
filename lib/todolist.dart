@@ -14,8 +14,7 @@ class ToDoList extends StatelessWidget {
       ),
       body: Center(
         child: ListView.separated(
-          shrinkWrap: true,
-            padding: const EdgeInsets.all(20.0),
+            shrinkWrap: true,
             itemCount: todolist.length,
             itemBuilder: (BuildContext context, int index) {
               var item = todolist[index];
@@ -23,8 +22,21 @@ class ToDoList extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [Icon(item.completed ? Icons.check_circle_outline : Icons.radio_button_off),
-                   Flexible(child: Container(padding: const EdgeInsets.only(left: 20.0), child: Text(item.title)))],
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Icon(item.completed
+                            ? Icons.check_circle_outline
+                            : Icons.radio_button_off)),
+                    Flexible(
+                        child: Container(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Text(item.title,
+                                style: TextStyle(
+                                    decoration: item.completed
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none))))
+                  ],
                 ),
               );
             },
