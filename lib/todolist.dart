@@ -52,10 +52,13 @@ class ToDoState extends State<ToDoList> {
                           ],
                         ),
                         onTap: () async {
-                          bool? completed = await showCompleteConfirmDialog(item.title);
-                              if (completed == true) {
+                          if (!item.completed) {
+                            bool? completed = await showCompleteConfirmDialog(
+                                item.title);
+                            if (completed == true) {
 
-                              }
+                            }
+                          }
                         });
                   },
                   separatorBuilder: (BuildContext context, int index) {
@@ -97,17 +100,32 @@ class ToDoState extends State<ToDoList> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Complete the item?"),
-            content: Text("Are you sure this item $title is completed?"),
+            title: const Text("Complete the item?"),
+            content: RichText(
+              textAlign: TextAlign.start,
+              text: TextSpan(children: [
+                const TextSpan(text: "Are you sure this item "),
+                TextSpan(
+                    text: title,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue)),
+                const TextSpan(text: "has completed?")
+              ]),
+            ),
             actions: [
-              TextButton(onPressed: () {
-                Navigator.of(context).pop();
-        }, child: const Text("Cancel")),
-        TextButton(onPressed: () {
-          Navigator.of(context).pop(true);
-        }, child: const Text("Sure"))
-        ]
-        );},
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancel")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: const Text("Sure"))
+            ]);
+      },
     );
   }
 }
