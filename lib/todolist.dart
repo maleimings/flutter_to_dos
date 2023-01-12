@@ -31,31 +31,41 @@ class ToDoState extends State<ToDoList> {
                   itemCount: todolist.length,
                   itemBuilder: (BuildContext context, int index) {
                     var item = todolist[index];
-                    return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: Icon(item.completed
-                                  ? Icons.check_circle_outline
-                                  : Icons.radio_button_off)),
-                          Flexible(
-                              child: Container(
-                                  padding: const EdgeInsets.only(left: 20.0),
-                                  child: Text(item.title,
-                                      style: TextStyle(
-                                          decoration: item.completed
-                                              ? TextDecoration.lineThrough
-                                              : TextDecoration.none))))
-                        ],
-                    );
+                    return GestureDetector(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.only(left: 20.0),
+                                child: Icon(item.completed
+                                    ? Icons.check_circle_outline
+                                    : Icons.radio_button_off)),
+                            Flexible(
+                                child: Container(
+                                    padding: const EdgeInsets.only(left: 20.0),
+                                    child: Text(item.title,
+                                        style: TextStyle(
+                                            decoration: item.completed
+                                                ? TextDecoration.lineThrough
+                                                : TextDecoration.none))))
+                          ],
+                        ),
+                        onTap: () async {
+                          bool? completed = await showCompleteConfirmDialog(item.title);
+                              if (completed == true) {
+
+                              }
+                        });
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return const Divider(color: Colors.grey);
                   }),
-            ), Center(child: Visibility(
-                visible: isLoading, child: const CircularProgressIndicator()))
+            ),
+            Center(
+                child: Visibility(
+                    visible: isLoading,
+                    child: const CircularProgressIndicator()))
           ],
         ));
   }
@@ -80,5 +90,24 @@ class ToDoState extends State<ToDoList> {
       todolist = data;
       isLoading = false;
     });
+  }
+
+  Future<bool?> showCompleteConfirmDialog(String title) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Complete the item?"),
+            content: Text("Are you sure this item $title is completed?"),
+            actions: [
+              TextButton(onPressed: () {
+                Navigator.of(context).pop();
+        }, child: const Text("Cancel")),
+        TextButton(onPressed: () {
+          Navigator.of(context).pop(true);
+        }, child: const Text("Sure"))
+        ]
+        );},
+    );
   }
 }
