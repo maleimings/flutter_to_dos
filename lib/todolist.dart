@@ -31,8 +31,7 @@ class ToDoState extends State<ToDoList> {
                   itemCount: todolist.length,
                   itemBuilder: (BuildContext context, int index) {
                     var item = todolist[index];
-                    return Expanded(
-                      child: Row(
+                    return Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -50,7 +49,6 @@ class ToDoState extends State<ToDoList> {
                                               ? TextDecoration.lineThrough
                                               : TextDecoration.none))))
                         ],
-                      ),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
