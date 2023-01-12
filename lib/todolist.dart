@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'todo.dart';
 
-class ToDoList extends StatelessWidget {
+class ToDoList extends StatefulWidget {
   final List<ToDoItem> todolist;
 
   const ToDoList({super.key, required this.todolist});
 
+  @override
+  State<StatefulWidget> createState() {
+    return ToDoState();
+  }
+}
+
+class ToDoState extends State<ToDoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,9 +22,9 @@ class ToDoList extends StatelessWidget {
       body: Center(
         child: ListView.separated(
             shrinkWrap: true,
-            itemCount: todolist.length,
+            itemCount: widget.todolist.length,
             itemBuilder: (BuildContext context, int index) {
-              var item = todolist[index];
+              var item = widget.todolist[index];
               return Expanded(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
