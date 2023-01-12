@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ToDoList extends StatefulWidget {
-
   const ToDoList({super.key});
 
   @override
@@ -14,49 +13,53 @@ class ToDoList extends StatefulWidget {
 }
 
 class ToDoState extends State<ToDoList> {
-
   List<ToDoItem> todolist = List.empty();
-  bool isLoading = false;
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("My ToDo List"),
-      ),
-      body: Center(
-        child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: todolist.length,
-            itemBuilder: (BuildContext context, int index) {
-              var item = todolist[index];
-              return Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Icon(item.completed
-                            ? Icons.check_circle_outline
-                            : Icons.radio_button_off)),
-                    Flexible(
-                        child: Container(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Text(item.title,
-                                style: TextStyle(
-                                    decoration: item.completed
-                                        ? TextDecoration.lineThrough
-                                        : TextDecoration.none))))
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const Divider(color: Colors.grey);
-            }),
-      ),
-    );
+        appBar: AppBar(
+          title: const Text("My ToDo List"),
+        ),
+        body: Stack(
+          alignment: AlignmentDirectional.topCenter,
+          children: [
+            Center(
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: todolist.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var item = todolist[index];
+                    return Expanded(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.only(left: 20.0),
+                              child: Icon(item.completed
+                                  ? Icons.check_circle_outline
+                                  : Icons.radio_button_off)),
+                          Flexible(
+                              child: Container(
+                                  padding: const EdgeInsets.only(left: 20.0),
+                                  child: Text(item.title,
+                                      style: TextStyle(
+                                          decoration: item.completed
+                                              ? TextDecoration.lineThrough
+                                              : TextDecoration.none))))
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Divider(color: Colors.grey);
+                  }),
+            ), Center(child: Visibility(
+                visible: isLoading, child: const CircularProgressIndicator()))
+          ],
+        ));
   }
 
   @override
@@ -65,16 +68,19 @@ class ToDoState extends State<ToDoList> {
     getToDoList();
   }
 
-  getToDoList() async{
-    var response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
+  getToDoList() async {
+    var response =
+        await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
 
-    List<ToDoItem> data = response.statusCode == 200 ?
-      (jsonDecode(response.body) as List)
-          .map((e) => ToDoItem.fromJson(e))
-          .toList() : List.empty();
+    List<ToDoItem> data = response.statusCode == 200
+        ? (jsonDecode(response.body) as List)
+            .map((e) => ToDoItem.fromJson(e))
+            .toList()
+        : List.empty();
 
     setState(() {
       todolist = data;
+      isLoading = false;
     });
   }
 }
