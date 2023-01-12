@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'todo.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ToDoList extends StatefulWidget {
-  final List<ToDoItem> todolist;
 
-  const ToDoList({super.key, required this.todolist});
+  const ToDoList({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -13,6 +14,10 @@ class ToDoList extends StatefulWidget {
 }
 
 class ToDoState extends State<ToDoList> {
+
+  List<ToDoItem> todolist = List.empty();
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +27,9 @@ class ToDoState extends State<ToDoList> {
       body: Center(
         child: ListView.separated(
             shrinkWrap: true,
-            itemCount: widget.todolist.length,
+            itemCount: todolist.length,
             itemBuilder: (BuildContext context, int index) {
-              var item = widget.todolist[index];
+              var item = todolist[index];
               return Expanded(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -52,5 +57,24 @@ class ToDoState extends State<ToDoList> {
             }),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getToDoList();
+  }
+
+  getToDoList() async{
+    var response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
+
+    List<ToDoItem> data = response.statusCode == 200 ?
+      (jsonDecode(response.body) as List)
+          .map((e) => ToDoItem.fromJson(e))
+          .toList() : List.empty();
+
+    setState(() {
+      todolist = data;
+    });
   }
 }

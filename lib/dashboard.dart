@@ -24,21 +24,12 @@ class Dashboard extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: ElevatedButton(
-                    onPressed: () async {
-                      var response = await http.get(Uri.parse(
-                          "https://jsonplaceholder.typicode.com/todos"));
-
-                      if (response.statusCode == 200) {
-                        var data = (jsonDecode(response.body) as List)
-                            .map((e) => ToDoItem.fromJson(e))
-                            .toList();
-
-                        await Navigator.push(
+                    onPressed: () {
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    ToDoList(todolist: data)));
-                      } else {}
+                                    const ToDoList()));
                     },
                     child: const Text('Show My ToDo List'))),
           ],
