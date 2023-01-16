@@ -31,7 +31,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqlite3:
+  sqflite:
   path:
   http: ^0.13.5
 
