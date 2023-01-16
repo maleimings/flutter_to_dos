@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'dart:convert';
 
-import 'package:sqflite/sqflite.dart';
+// import 'package:sqflite/sqflite.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key, required this.name});
@@ -68,15 +68,15 @@ class DashboardState extends State<Dashboard> {
   }
 
   getAndSaveToDoList() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    final database = openDatabase(
-        join(await getDatabasesPath(), "todo_database.db"),
-        onCreate: (db, version) {
-          return db.execute(
-              'CREATE TABLE todos(id TEXT PRIMARY KEY, title TEXT NOT NULL, completed INTEGER NOT NULL');
-        },
-        version: 1
-    );
+    // WidgetsFlutterBinding.ensureInitialized();
+    // final database = openDatabase(
+    //     join(await getDatabasesPath(), "todo_database.db"),
+    //     onCreate: (db, version) {
+    //       return db.execute(
+    //           'CREATE TABLE todos(id TEXT PRIMARY KEY, title TEXT NOT NULL, completed INTEGER NOT NULL');
+    //     },
+    //     version: 1
+    // );
 
     var response =
     await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
