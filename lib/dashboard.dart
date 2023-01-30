@@ -4,6 +4,7 @@ import 'package:flutter_to_dos/to_do_item.dart';
 import 'package:flutter_to_dos/to_do_list.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'to_do_type.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key, required this.name});
@@ -41,22 +42,46 @@ class DashboardState extends State<Dashboard> {
                     padding: const EdgeInsets.only(top: 20.0),
                     child: Text(
                         "This is a dashboard page for user ${widget.name}")),
-                Padding(padding: const EdgeInsets.all(20.0), child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [ElevatedButton(onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ToDoList(todoList: completedItems,)));
-                  }, child: Row(
-                    children: [const Icon(Icons.check_circle_outline_outlined), Text('Completed ${completedItems.length}')],)),
-                  ElevatedButton(onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ToDoList(todoList: incompletedItems,)));
-                  }, child: Row(children: [const Icon(Icons.radio_button_off_outlined), Text('Incompleted ${incompletedItems.length}')],)),],
-                ),),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ToDoList(
+                                          todoList: completedItems,
+                                      type: Type.completed,
+                                        )));
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(Icons.check_circle_outline_outlined),
+                              Text('Completed ${completedItems.length}')
+                            ],
+                          )),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ToDoList(
+                                          todoList: incompletedItems,
+                                      type: Type.incomplete,
+                                        )));
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(Icons.radio_button_off_outlined),
+                              Text('Incompleted ${incompletedItems.length}')
+                            ],
+                          )),
+                    ],
+                  ),
+                ),
                 Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: ElevatedButton(
@@ -64,7 +89,10 @@ class DashboardState extends State<Dashboard> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ToDoList(todoList: todolist,)));
+                                  builder: (context) => ToDoList(
+                                        todoList: todolist,
+                                    type: Type.all,
+                                      )));
                         },
                         child: const Text('Show All My ToDo List'))),
               ],
@@ -93,8 +121,8 @@ class DashboardState extends State<Dashboard> {
 
           data = response.statusCode == 200
               ? (jsonDecode(response.body) as List)
-              .map((e) => ToDoItem.fromJson(e))
-              .toList()
+                  .map((e) => ToDoItem.fromJson(e))
+                  .toList()
               : List.empty();
 
           if (data.isNotEmpty) {

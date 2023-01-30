@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'to_do_item.dart';
+import 'to_do_type.dart';
 
 class ToDoList extends StatefulWidget {
   List<ToDoItem> todoList = List.empty();
+  var type = Type.all;
 
-  ToDoList({super.key, required this.todoList});
+  ToDoList({super.key, required this.todoList, required this.type});
 
   @override
   State<StatefulWidget> createState() {
@@ -15,12 +17,23 @@ class ToDoList extends StatefulWidget {
 class ToDoState extends State<ToDoList> {
   List<ToDoItem> todolist = List.empty();
   bool isLoading = false;
+  
+  String getText(Type type) {
+    switch (type) {
+      case Type.all:
+        return "My ToDo List";
+      case Type.completed:
+        return "My Completed List";
+      case Type.incomplete:
+        return "My In-Progress List";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("My ToDo List"),
+          title: Text(getText(widget.type)),
         ),
         body: Stack(
           alignment: AlignmentDirectional.topCenter,
