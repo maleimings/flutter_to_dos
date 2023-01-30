@@ -71,7 +71,7 @@ class DashboardState extends State<Dashboard> {
 
   getAndSaveToDoList() async {
     DataBaseManager.instance.database.then((database) {
-      database.query('todos_database').then((todos) async {
+      database.query('todos').then((todos) async {
         List<ToDoItem> data;
         if (todos.isEmpty) {
           var response = await http
@@ -82,6 +82,13 @@ class DashboardState extends State<Dashboard> {
                   .map((e) => ToDoItem.fromJson(e))
                   .toList()
               : List.empty();
+
+          if (data.isNotEmpty) {
+            for (var element in data) {
+              var value = element.toMap();
+              database.insert('todos', value);
+            }
+          }
         } else {
           data = List.generate(todos.length, (index) {
             return ToDoItem(

@@ -9,6 +9,14 @@ class ToDoItem {
     return ToDoItem(id: json['id'], title: json['title'], completed: json['completed']);
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'completed': completed ? 1 : 0
+    };
+  }
+
   @override
   String toString() {
     return "id: $id, title:$title, completed:$completed";
