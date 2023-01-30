@@ -94,7 +94,7 @@ class DashboardState extends State<Dashboard> {
                                     type: Type.all,
                                       )));
                         },
-                        child: const Text('Show All My ToDo List'))),
+                        child: Text('Show All My ToDo List ${todolist.length}'))),
               ],
             )),
             Center(
@@ -146,11 +146,8 @@ class DashboardState extends State<Dashboard> {
               data.where((element) => element.completed == true).toList();
           incompletedItems =
               data.where((element) => element.completed == false).toList();
+          isLoading = false;
         });
-      });
-    }).whenComplete(() {
-      setState(() {
-        isLoading = false;
       });
     });
   }
