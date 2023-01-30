@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'to_do_item.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class ToDoList extends StatefulWidget {
-  const ToDoList({super.key});
+  List<ToDoItem> todoList = List.empty();
+
+  ToDoList({super.key, required this.todoList});
 
   @override
   State<StatefulWidget> createState() {
@@ -14,7 +14,7 @@ class ToDoList extends StatefulWidget {
 
 class ToDoState extends State<ToDoList> {
   List<ToDoItem> todolist = List.empty();
-  bool isLoading = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,9 @@ class ToDoState extends State<ToDoList> {
             Center(
               child: ListView.separated(
                   shrinkWrap: true,
-                  itemCount: todolist.length,
+                  itemCount: widget.todoList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var item = todolist[index];
+                    var item = widget.todoList[index];
                     return GestureDetector(
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -76,23 +76,6 @@ class ToDoState extends State<ToDoList> {
   @override
   void initState() {
     super.initState();
-    getToDoList();
-  }
-
-  getToDoList() async {
-    var response =
-        await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
-
-    List<ToDoItem> data = response.statusCode == 200
-        ? (jsonDecode(response.body) as List)
-            .map((e) => ToDoItem.fromJson(e))
-            .toList()
-        : List.empty();
-
-    setState(() {
-      todolist = data;
-      isLoading = false;
-    });
   }
 
   Future<bool?> showCompleteConfirmDialog(String title) {
