@@ -49,21 +49,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   void _onSignInClicked() {
     if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(name: usernameController.value.text)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  Dashboard(name: usernameController.value.text)));
     }
   }
 
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  static const snackBar = SnackBar(
-    content: Text("Please enter your username and password")
-  );
+  static const snackBar =
+      SnackBar(content: Text("Please enter your username and password"));
 
   @override
   Widget build(BuildContext context) {
@@ -99,28 +101,34 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            TextField(
-                controller: usernameController,
-                keyboardType: TextInputType.text,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
-              icon: Icon(Icons.person),
-              labelText: 'User Name',
-              helperText: 'Input your user name here'
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+              child: TextField(
+                  controller: usernameController,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(10.0),
+                      icon: Icon(Icons.person),
+                      labelText: 'User Name',
+                      helperText: 'Input your user name here'),
+                  autofocus: false),
             ),
-            autofocus: false),
-            TextField(
-                controller: passwordController,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(10.0),
-                    icon: Icon(Icons.lock),
-                    labelText: 'Password',
-                    helperText: 'Input your password here'
-                ),
-                autofocus: false),
-            Padding(padding: const EdgeInsets.only(top: 20.0),
-                child: ElevatedButton(onPressed: _onSignInClicked, child: const Text("Sign in")))
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+              child: TextField(
+                  controller: passwordController,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(10.0),
+                      icon: Icon(Icons.lock),
+                      labelText: 'Password',
+                      helperText: 'Input your password here'),
+                  autofocus: false),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: ElevatedButton(
+                    onPressed: _onSignInClicked, child: const Text("Sign in")))
           ],
         ),
       ),

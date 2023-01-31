@@ -40,8 +40,20 @@ class DashboardState extends State<Dashboard> {
               children: [
                 Padding(
                     padding: const EdgeInsets.only(top: 20.0),
-                    child: Text(
-                        "This is a dashboard page for user ${widget.name}")),
+                    child: RichText(
+                      text: TextSpan(
+                          style: const TextStyle(
+                              fontSize: 18.0, color: Colors.black),
+                          children: [
+                            const TextSpan(text: "Dashboard page for user "),
+                            TextSpan(
+                                text: widget.name,
+                                style: const TextStyle(
+                                    color: Colors.blueAccent,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline))
+                          ]),
+                    )),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
@@ -54,13 +66,13 @@ class DashboardState extends State<Dashboard> {
                                 MaterialPageRoute(
                                     builder: (context) => ToDoList(
                                           todoList: completedItems,
-                                      type: Type.completed,
+                                          type: Type.completed,
                                         )));
                           },
                           child: Row(
                             children: [
                               const Icon(Icons.check_circle_outline_outlined),
-                              Text('Completed ${completedItems.length}')
+                              Text('Completed: ${completedItems.length}')
                             ],
                           )),
                       ElevatedButton(
@@ -70,13 +82,13 @@ class DashboardState extends State<Dashboard> {
                                 MaterialPageRoute(
                                     builder: (context) => ToDoList(
                                           todoList: incompletedItems,
-                                      type: Type.incomplete,
+                                          type: Type.incomplete,
                                         )));
                           },
                           child: Row(
                             children: [
                               const Icon(Icons.radio_button_off_outlined),
-                              Text('Incompleted ${incompletedItems.length}')
+                              Text('Incompleted: ${incompletedItems.length}')
                             ],
                           )),
                     ],
@@ -91,10 +103,11 @@ class DashboardState extends State<Dashboard> {
                               MaterialPageRoute(
                                   builder: (context) => ToDoList(
                                         todoList: todolist,
-                                    type: Type.all,
+                                        type: Type.all,
                                       )));
                         },
-                        child: Text('Show All My ToDo List ${todolist.length}'))),
+                        child:
+                            Text('Show All My ToDo List: ${todolist.length}'))),
               ],
             )),
             Center(
