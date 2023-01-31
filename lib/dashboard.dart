@@ -3,6 +3,7 @@ import 'package:flutter_to_dos/database_manager.dart';
 import 'package:flutter_to_dos/to_do_item.dart';
 import 'package:flutter_to_dos/to_do_list.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 import 'dart:convert';
 import 'to_do_type.dart';
 
@@ -72,7 +73,18 @@ class DashboardState extends State<Dashboard> {
                           child: Row(
                             children: [
                               const Icon(Icons.check_circle_outline_outlined),
-                              Text('Completed: ${completedItems.length}')
+                              RichText(
+                                  text: TextSpan(
+                                      style: const TextStyle(
+                                          fontSize: 14.0, color: Colors.white),
+                                      children: [
+                                    const TextSpan(text: "Completed: "),
+                                    TextSpan(
+                                        text: completedItems.length.toString(),
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline))
+                                  ]))
                             ],
                           )),
                       ElevatedButton(
@@ -88,7 +100,19 @@ class DashboardState extends State<Dashboard> {
                           child: Row(
                             children: [
                               const Icon(Icons.radio_button_off_outlined),
-                              Text('Incompleted: ${incompletedItems.length}')
+                              RichText(
+                                  text: TextSpan(
+                                      style: const TextStyle(
+                                          fontSize: 14.0, color: Colors.white),
+                                      children: [
+                                    const TextSpan(text: "Incomplete: "),
+                                    TextSpan(
+                                        text:
+                                            incompletedItems.length.toString(),
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline)),
+                                  ]))
                             ],
                           )),
                     ],
@@ -106,8 +130,18 @@ class DashboardState extends State<Dashboard> {
                                         type: Type.all,
                                       )));
                         },
-                        child:
-                            Text('Show All My ToDo List: ${todolist.length}'))),
+                        child: RichText(
+                          text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 14.0, color: Colors.white),
+                              children: [
+                                const TextSpan(text: 'Show All My ToDo List: '),
+                                TextSpan(
+                                    text: todolist.length.toString(),
+                                    style: const TextStyle(
+                                        decoration: TextDecoration.underline)),
+                              ]),
+                        ))),
               ],
             )),
             Center(
