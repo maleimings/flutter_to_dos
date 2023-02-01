@@ -3,7 +3,6 @@ import 'package:flutter_to_dos/database_manager.dart';
 import 'package:flutter_to_dos/to_do_item.dart';
 import 'package:flutter_to_dos/to_do_list.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 import 'dart:convert';
 import 'to_do_type.dart';
 

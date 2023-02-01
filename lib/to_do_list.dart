@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_to_dos/database_manager.dart';
+import 'package:sqflite/sqflite.dart';
 import 'to_do_item.dart';
 import 'to_do_type.dart';
 
@@ -69,7 +71,7 @@ class ToDoState extends State<ToDoList> {
                             bool? completed = await showCompleteConfirmDialog(
                                 item.title);
                             if (completed == true) {
-
+                              update(item);
                             }
                           }
                         });
@@ -91,6 +93,13 @@ class ToDoState extends State<ToDoList> {
     super.initState();
   }
 
+  Future update(ToDoItem item) async {
+    final Database db = await DataBaseManager.instance.database;
+    var row = item.toMap();
+    row["completed"] = true;
+    return await db.update("todos", row, where: "id = ?", whereArgs: [item.id]);
+  }
+
   Future<bool?> showCompleteConfirmDialog(String title) {
     return showDialog<bool>(
       context: context,
@@ -99,14 +108,16 @@ class ToDoState extends State<ToDoList> {
             title: const Text("Complete the item?"),
             content: RichText(
               textAlign: TextAlign.start,
-              text: TextSpan(children: [
-                const TextSpan(text: "Are you sure this item "),
+              text: TextSpan(
+                style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                  children: [
+                const TextSpan(text: "Are you sure this item:\n"),
                 TextSpan(
-                    text: title,
+                    text: "$title\n",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.blue)),
-                const TextSpan(text: "has completed?")
+                const TextSpan(text: "is completed?")
               ]),
             ),
             actions: [
@@ -114,7 +125,7 @@ class ToDoState extends State<ToDoList> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Cancel")),
+                  child: const Text("Not Yet")),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(true);
