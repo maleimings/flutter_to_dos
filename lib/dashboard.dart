@@ -27,6 +27,15 @@ class DashboardState extends State<Dashboard> {
   List<ToDoItem> completedItems = List.empty();
   List<ToDoItem> incompletedItems = List.empty();
 
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    if (ModalRoute.of(context)?.isCurrent == true) {
+      getAndSaveToDoList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

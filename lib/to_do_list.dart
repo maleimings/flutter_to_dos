@@ -17,7 +17,6 @@ class ToDoList extends StatefulWidget {
 }
 
 class ToDoState extends State<ToDoList> {
-  List<ToDoItem> todolist = List.empty();
   bool isLoading = false;
   
   String getText(Type type) {
@@ -71,7 +70,15 @@ class ToDoState extends State<ToDoList> {
                             bool? completed = await showCompleteConfirmDialog(
                                 item.title);
                             if (completed == true) {
-                              update(item);
+                              setState(() {
+                                isLoading = true;
+                              });
+                              update(item).then((value) => setState(() {
+                                isLoading = false;
+                                setState(() {
+                                  widget.todoList = widget.todoList.where((element) => element.id != item.id).toList();
+                                });
+                              }));
                             }
                           }
                         });
