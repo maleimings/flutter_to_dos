@@ -27,15 +27,6 @@ class DashboardState extends State<Dashboard> {
   List<ToDoItem> completedItems = List.empty();
   List<ToDoItem> incompletedItems = List.empty();
 
-
-  @override
-  void deactivate() {
-    super.deactivate();
-    if (ModalRoute.of(context)?.isCurrent == true) {
-      getAndSaveToDoList();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +94,7 @@ class DashboardState extends State<Dashboard> {
                                     builder: (context) => ToDoList(
                                           todoList: incompletedItems,
                                           type: Type.incomplete,
-                                        )));
+                                        ))).then((value) => getAndSaveToDoList());
                           },
                           child: Row(
                             children: [
@@ -136,7 +127,7 @@ class DashboardState extends State<Dashboard> {
                                   builder: (context) => ToDoList(
                                         todoList: todolist,
                                         type: Type.all,
-                                      )));
+                                      ))).then((value) => getAndSaveToDoList());
                         },
                         child: RichText(
                           text: TextSpan(
