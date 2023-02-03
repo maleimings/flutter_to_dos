@@ -103,7 +103,7 @@ class ToDoState extends State<ToDoList> {
   Future update(ToDoItem item) async {
     final Database db = await DataBaseManager.instance.database;
     var row = item.toMap();
-    row["completed"] = true;
+    row["completed"] = 1; //1 means true
     return await db.update("todos", row, where: "id = ?", whereArgs: [item.id]);
   }
 
