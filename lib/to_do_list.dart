@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_to_dos/database_manager.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:provider/provider.dart';
 import 'to_do_item.dart';
 import 'to_do_type.dart';
 
@@ -18,7 +19,7 @@ class ToDoList extends StatefulWidget {
 
 class ToDoState extends State<ToDoList> {
   bool isLoading = false;
-  
+
   String getText(Type type) {
     switch (type) {
       case Type.all:
@@ -35,6 +36,12 @@ class ToDoState extends State<ToDoList> {
     return Scaffold(
         appBar: AppBar(
           title: Text(getText(widget.type)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.of(context).pop(widget.todoList);
+            },
+          ),
         ),
         body: Stack(
           alignment: AlignmentDirectional.topCenter,
@@ -116,16 +123,15 @@ class ToDoState extends State<ToDoList> {
             content: RichText(
               textAlign: TextAlign.start,
               text: TextSpan(
-                style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                  style: const TextStyle(fontSize: 16.0, color: Colors.black),
                   children: [
-                const TextSpan(text: "Are you sure this item:\n"),
-                TextSpan(
-                    text: "$title\n",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue)),
-                const TextSpan(text: "is completed?")
-              ]),
+                    const TextSpan(text: "Are you sure this item:\n"),
+                    TextSpan(
+                        text: "$title\n",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.blue)),
+                    const TextSpan(text: "is completed?")
+                  ]),
             ),
             actions: [
               TextButton(
