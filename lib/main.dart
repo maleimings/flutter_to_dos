@@ -61,11 +61,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  late final TextEditingController usernameController;
+  late final TextEditingController passwordController;
 
   static const snackBar =
       SnackBar(content: Text("Please enter your username and password"));
+
+
+  @override
+  void initState() {
+    super.initState();
+    usernameController = TextEditingController();
+    passwordController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,5 +141,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
   }
 }
