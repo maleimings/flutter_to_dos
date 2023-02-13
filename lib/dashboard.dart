@@ -24,10 +24,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
-  List<ToDoItem> todolist = List.empty();
   bool isLoading = true;
-  // List<ToDoItem> completedItems = List.empty();
-  // List<ToDoItem> incompletedItems = List.empty();
+
   late final MyToDoList myToDoList;
 
   @override
@@ -128,7 +126,7 @@ class DashboardState extends State<Dashboard> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ToDoList(
-                                        todoList: todolist,
+                                        todoList: myToDoList.myToDoList,
                                         type: Type.all,
                                       ))).then((value) => getAndSaveToDoList());
                         },
@@ -167,7 +165,7 @@ class DashboardState extends State<Dashboard> {
   @override
   void dispose() {
     super.dispose();
-    // myToDoList.dispose();
+    myToDoList.dispose();
   }
 
   getAndSaveToDoList() async {
@@ -201,10 +199,6 @@ class DashboardState extends State<Dashboard> {
 
         myToDoList.initMyToDoList(data);
         setState(() {
-          // completedItems =
-          //     data.where((element) => element.completed == true).toList();
-          // incompletedItems =
-          //     data.where((element) => element.completed == false).toList();
           isLoading = false;
         });
       });
