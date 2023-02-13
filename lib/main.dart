@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_to_dos/dashboard.dart';
+import 'package:provider/provider.dart';
+import 'my_to_do_list.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => MyToDoList(),
+      child: const MyApp(), )
+
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -50,29 +57,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void _onSignInClicked() {
-    if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
     } else {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  Dashboard(name: usernameController.value.text)));
+                  Dashboard(name: _usernameController.value.text)));
     }
   }
 
-  late final TextEditingController usernameController;
-  late final TextEditingController passwordController;
+  late final TextEditingController _usernameController;
+  late final TextEditingController _passwordController;
 
-  static const snackBar =
+  static const _snackBar =
       SnackBar(content: Text("Please enter your username and password"));
 
 
   @override
   void initState() {
     super.initState();
-    usernameController = TextEditingController();
-    passwordController = TextEditingController();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
   }
 
   @override
@@ -112,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20.0),
               child: TextField(
-                  controller: usernameController,
+                  controller: _usernameController,
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
                       contentPadding: EdgeInsets.all(10.0),
@@ -124,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
               child: TextField(
-                  controller: passwordController,
+                  controller: _passwordController,
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
                       contentPadding: EdgeInsets.all(10.0),
@@ -146,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     super.dispose();
-    usernameController.dispose();
-    passwordController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
   }
 }

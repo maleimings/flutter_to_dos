@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_to_dos/database_manager.dart';
+import 'package:flutter_to_dos/my_to_do_list.dart';
 import 'package:flutter_to_dos/to_do_item.dart';
 import 'package:flutter_to_dos/to_do_list.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'to_do_type.dart';
 
@@ -24,8 +26,9 @@ class Dashboard extends StatefulWidget {
 class DashboardState extends State<Dashboard> {
   List<ToDoItem> todolist = List.empty();
   bool isLoading = true;
-  List<ToDoItem> completedItems = List.empty();
-  List<ToDoItem> incompletedItems = List.empty();
+  // List<ToDoItem> completedItems = List.empty();
+  // List<ToDoItem> incompletedItems = List.empty();
+  late final MyToDoList myToDoList;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +68,7 @@ class DashboardState extends State<Dashboard> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ToDoList(
-                                          todoList: completedItems,
+                                          todoList: myToDoList.completedItemList,
                                           type: Type.completed,
                                         )));
                           },
@@ -79,7 +82,7 @@ class DashboardState extends State<Dashboard> {
                                       children: [
                                     const TextSpan(text: "Completed: "),
                                     TextSpan(
-                                        text: completedItems.length.toString(),
+                                        text: myToDoList.completedItemList.length.toString(),
                                         style: const TextStyle(
                                             decoration:
                                                 TextDecoration.underline))
@@ -92,7 +95,7 @@ class DashboardState extends State<Dashboard> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ToDoList(
-                                          todoList: incompletedItems,
+                                          todoList: myToDoList.incompletedItemList,
                                           type: Type.incomplete,
                                         ))).then((value) => getAndSaveToDoList());
                           },
@@ -107,7 +110,7 @@ class DashboardState extends State<Dashboard> {
                                     const TextSpan(text: "Incomplete: "),
                                     TextSpan(
                                         text:
-                                            incompletedItems.length.toString(),
+                                            myToDoList.incompletedItemList.length.toString(),
                                         style: const TextStyle(
                                             decoration:
                                                 TextDecoration.underline)),
@@ -136,7 +139,7 @@ class DashboardState extends State<Dashboard> {
                               children: [
                                 const TextSpan(text: 'Show All My ToDo List: '),
                                 TextSpan(
-                                    text: todolist.length.toString(),
+                                    text: myToDoList.myToDoList.length.toString(),
                                     style: const TextStyle(
                                         decoration: TextDecoration.underline)),
                               ]),
@@ -153,8 +156,18 @@ class DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
+    myToDoList = Provider.of<MyToDoList>(context, listen: false);
+
     super.initState();
+
     getAndSaveToDoList();
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    // myToDoList.dispose();
   }
 
   getAndSaveToDoList() async {
@@ -186,12 +199,12 @@ class DashboardState extends State<Dashboard> {
           });
         }
 
+        myToDoList.initMyToDoList(data);
         setState(() {
-          todolist = data;
-          completedItems =
-              data.where((element) => element.completed == true).toList();
-          incompletedItems =
-              data.where((element) => element.completed == false).toList();
+          // completedItems =
+          //     data.where((element) => element.completed == true).toList();
+          // incompletedItems =
+          //     data.where((element) => element.completed == false).toList();
           isLoading = false;
         });
       });
