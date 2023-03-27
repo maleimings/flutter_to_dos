@@ -25,9 +25,9 @@ class ToDoState extends State<ToDoList> {
       case Type.all:
         return "My ToDo List";
       case Type.completed:
-        return "My Completed List";
+        return "My Completed TDo List";
       case Type.incomplete:
-        return "My In-Progress List";
+        return "My In-Progress ToDo List";
     }
   }
 

@@ -58,7 +58,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   void _onSignInClicked() {
     if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+      SnackBar snackBar =
+          const SnackBar(content: Text("Please enter your username and password"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       Navigator.push(
           context,
@@ -70,10 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late final TextEditingController _usernameController;
   late final TextEditingController _passwordController;
-
-  static const _snackBar =
-      SnackBar(content: Text("Please enter your username and password"));
-
 
   @override
   void initState() {
