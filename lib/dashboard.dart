@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_to_dos/database_manager.dart';
 import 'package:flutter_to_dos/my_to_do_list.dart';
 import 'package:flutter_to_dos/to_do_item.dart';
 import 'package:flutter_to_dos/to_do_list.dart';
 import 'package:flutter_to_dos/to_do_repository.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'dart:convert';
 import 'to_do_type.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key, required this.name});
 
   final String name;
-
-  Future<http.Response> fetchMyToDoList() {
-    return http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
-  }
 
   @override
   State<StatefulWidget> createState() {
@@ -28,6 +21,8 @@ class DashboardState extends State<Dashboard> {
   bool isLoading = true;
 
   late final MyToDoList myToDoList;
+
+  ToDoRepository toDoRepository = ToDoRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +157,6 @@ class DashboardState extends State<Dashboard> {
     getAndSaveToDoList();
   }
 
-
   @override
   void dispose() {
     super.dispose();
@@ -170,7 +164,7 @@ class DashboardState extends State<Dashboard> {
   }
 
   getAndSaveToDoList() async {
-    List<ToDoItem> todos = await ToDoRepository().getAll();
+    List<ToDoItem> todos = await toDoRepository.getAll();
 
     myToDoList.initMyToDoList(todos);
 
