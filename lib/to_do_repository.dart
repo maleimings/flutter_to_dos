@@ -41,4 +41,13 @@ class ToDoRepository implements IToDoRepository {
 
     return data;
   }
+
+  @override
+  Future update(ToDoItem item) async {
+    final Database db = await DataBaseManager.instance.database;
+    var row = item.toMap();
+    row["completed"] = 1; //1 means true
+    return await db.update("todos", row, where: "id = ?", whereArgs: [item.id]);
+  }
+
 }

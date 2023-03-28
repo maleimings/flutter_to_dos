@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_to_dos/database_manager.dart';
+import 'package:flutter_to_dos/to_do_repository.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:provider/provider.dart';
 import 'to_do_item.dart';
@@ -80,7 +81,7 @@ class ToDoState extends State<ToDoList> {
                               setState(() {
                                 isLoading = true;
                               });
-                              update(item).then((value) => setState(() {
+                              ToDoRepository().update(item).then((value) => setState(() {
                                 isLoading = false;
                                 setState(() {
                                   widget.todoList = widget.todoList.where((element) => element.id != item.id).toList();
@@ -105,13 +106,6 @@ class ToDoState extends State<ToDoList> {
   @override
   void initState() {
     super.initState();
-  }
-
-  Future update(ToDoItem item) async {
-    final Database db = await DataBaseManager.instance.database;
-    var row = item.toMap();
-    row["completed"] = 1; //1 means true
-    return await db.update("todos", row, where: "id = ?", whereArgs: [item.id]);
   }
 
   Future<bool?> showCompleteConfirmDialog(String title) {
