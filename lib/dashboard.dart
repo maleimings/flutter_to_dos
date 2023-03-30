@@ -62,7 +62,6 @@ class DashboardState extends State<Dashboard> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ToDoList(
-                                          todoList: myToDoList.completedItemList,
                                           type: Type.completed,
                                         )));
                           },
@@ -89,7 +88,6 @@ class DashboardState extends State<Dashboard> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ToDoList(
-                                          todoList: myToDoList.incompletedItemList,
                                           type: Type.incomplete,
                                         ))).then((value) => getAndSaveToDoList());
                           },
@@ -122,7 +120,6 @@ class DashboardState extends State<Dashboard> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ToDoList(
-                                        todoList: myToDoList.myToDoList,
                                         type: Type.all,
                                       ))).then((value) => getAndSaveToDoList());
                         },

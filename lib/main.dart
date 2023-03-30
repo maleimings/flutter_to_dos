@@ -8,7 +8,6 @@ void main() {
     ChangeNotifierProvider(
       create: (_) => MyToDoList(),
       child: const MyApp(), )
-
   );
 }
 

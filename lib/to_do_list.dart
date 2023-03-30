@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_to_dos/database_manager.dart';
+import 'package:flutter_to_dos/my_to_do_list.dart';
 import 'package:flutter_to_dos/to_do_repository.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:provider/provider.dart';
 import 'to_do_item.dart';
 import 'to_do_type.dart';
 
 class ToDoList extends StatefulWidget {
-  List<ToDoItem> todoList = List.empty();
   var type = Type.all;
 
-  ToDoList({super.key, required this.todoList, required this.type});
+  ToDoList({super.key, required this.type});
 
   @override
   State<StatefulWidget> createState() {
@@ -32,15 +30,32 @@ class ToDoState extends State<ToDoList> {
     }
   }
 
+  List<ToDoItem>initToDoList(Type type, MyToDoList myToDoList) {
+    switch (type) {
+      case Type.all:
+        return myToDoList.myToDoList;
+      case Type.completed:
+        return myToDoList.completedItemList;
+      case Type.incomplete:
+        return myToDoList.incompletedItemList;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final MyToDoList myToDoList = Provider.of<MyToDoList>(context);
+
+    List<ToDoItem> todoList = initToDoList(widget.type, myToDoList);
+
+    ToDoRepository toDoRepository = ToDoRepository();
+
     return Scaffold(
         appBar: AppBar(
           title: Text(getText(widget.type)),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.of(context).pop(widget.todoList);
+              Navigator.of(context).pop();
             },
           ),
         ),
@@ -50,9 +65,9 @@ class ToDoState extends State<ToDoList> {
             Center(
               child: ListView.separated(
                   shrinkWrap: true,
-                  itemCount: widget.todoList.length,
+                  itemCount: todoList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var item = widget.todoList[index];
+                    var item = todoList[index];
                     return GestureDetector(
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -81,12 +96,16 @@ class ToDoState extends State<ToDoList> {
                               setState(() {
                                 isLoading = true;
                               });
-                              ToDoRepository().update(item).then((value) => setState(() {
-                                isLoading = false;
-                                setState(() {
-                                  widget.todoList = widget.todoList.where((element) => element.id != item.id).toList();
+
+                              toDoRepository.update(item).then((_) {
+                                toDoRepository.getAll().then((list) {
+                                  myToDoList.initMyToDoList(list);
+
+                                  setState(() {
+                                    isLoading = false;
+                                  });
                                 });
-                              }));
+                              });
                             }
                           }
                         });
